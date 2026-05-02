@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <title>SISTEMA DE SEGURANÇA V1</title>
+    <style>
+        body {
+            margin: 0;
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: linear-gradient(45deg, #000000, #990000, #000000);
+            background-size: 400% 400%;
+            animation: gradient 10s ease infinite;
+            color: #ff0000;
+            font-family: 'Courier New', Courier, monospace;
+            overflow: hidden;
+        }
+        @keyframes gradient {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+        .panel {
+            background: rgba(0, 0, 0, 0.9);
+            padding: 40px;
+            border: 2px solid #ff0000;
+            box-shadow: 0 0 30px #ff0000;
+            text-align: center;
+            z-index: 10;
+        }
+    </style>
+</head>
+<body>
+    <div class="panel">
+        <h1>SISTEMA MONITORADO</h1>
+        <p>IP e Protocolos de Sessão em análise...</p>
+    </div>
+
+    <script src="sistema.js"></script>
+</body>
+</html>
